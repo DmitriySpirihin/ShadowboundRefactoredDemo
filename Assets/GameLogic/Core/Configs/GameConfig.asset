@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25be64255c7c2594fbf90055391126e8, type: 3}
+  m_Name: GameConfig
+  m_EditorClassIdentifier: Assembly-CSharp::GameConfigSO
+  defaultSoundVolume: 0.62
+  defaultMusicVolume: 0.32
+  defaultNeedVibration: 1
+  defaultNeedCameraShake: 1
+  defaultNeedSlowMo: 1
+  defaultNeedBlood: 1
+  defaultLocalization: 1
+  defaultDifficulty: 2
+  defaultStartingLevel: 1
+  defaultStartingCoins: 0
+  defaultSwordLevel: 1
+  defaultArmorLevel: 1

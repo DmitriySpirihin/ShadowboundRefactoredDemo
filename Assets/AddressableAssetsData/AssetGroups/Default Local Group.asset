@@ -1,0 +1,438 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: Default Local Group
+  m_GUID: 31a00722188d5484c8610ee221b58350
+  m_SerializeEntries:
+  - m_GUID: 058d3b1cc8cfa714e9e262054cd9eb91
+    m_Address: Assets/Audio/Sounds_add/ESM_Sword_Kill_4_Sound_FX_Military_Gore_Blood.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 05eff7cf0f1c4e34cbd97d5a9c448b4e
+    m_Address: Assets/Audio/Music/Click.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 068b22957e76c8043a76d647692bd01b
+    m_Address: Assets/Audio/HeroHits/Parry/DeathSoundNew.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0abd227eb7461204b85515b117651a75
+    m_Address: Assets/Audio/HeroHits/Parry/mech-zvonkiy-v-prostranstve.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0cd12c34889f17f4cb4f5c7940f917b6
+    m_Address: Assets/Audio/HeroHits/udar-po-telu-v-kurtke.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 104cd988596c9da4aa45e5af7746753d
+    m_Address: Assets/Audio/HeroHits/Big/BigKnife2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 112854b51b4b2194187660b2d4fe9e3a
+    m_Address: Assets/Audio/Music/Darkness inside.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 12cba9db0fa37f443bd9b0c816856a22
+    m_Address: Assets/Audio/Sounds_add/ESM_Sword_Kill_1_Sound_FX_Military_Gore_Blood.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 14777279ad2fe71459d3ac0ad9430707
+    m_Address: Assets/Audio/HeroHits/Parry/mech-zvonkiy-vyisokiy-odinochnyiy-korotkiy.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1914d9492f7f8474290444918b276259
+    m_Address: Assets/Audio/HeroHits/Sword/ESM_Sword_Kill_6_Sound_FX_Military_Gore_Blood.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1b86813de87b51945ba43bfd48765a6d
+    m_Address: Assets/Audio/HeroHits/Parry/mech-korotkiy-udar.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1f0c9afb295b6f343a2ce7ebbe1fb9ac
+    m_Address: Assets/Audio/HeroHits/Knife/ESM_Knife_Impact_1_Sound_FX_Military_Hit.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1f2cfc61f0fd4e148b90b7d8ee90e174
+    m_Address: Assets/Audio/HeroHits/Parry/mech-vyisokiy-zvonkiy-blizkiy.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 20e7d9594ce710945a13eb8c64f72f41
+    m_Address: Assets/Audio/Music/Dark age (bonus).mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 25219643e7cab934ab07f47d97c42b40
+    m_Address: Assets/Audio/Music/MainTheme.ogg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 28462ddf545a6d44081463c1492fdd35
+    m_Address: Assets/Audio/HeroHits/Parry/mech-zvonkiy-chetkiy-v-prostranstve.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 37339df531cfb894689581242445bd48
+    m_Address: Assets/Audio/Music/Forbidden magic.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 378f703f5a8eae942bbd6cecea735eef
+    m_Address: Assets/Audio/HeroHits/Arrow/ESM_Arrow_Impact_7_Sound_FX_Military.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 38ce6d3f1990db54d816bcc4e9626f44
+    m_Address: Assets/Audio/Music/Abandoned village.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3f31abf51d2be5d499825ce93d5855ef
+    m_Address: Assets/Audio/Music/Blood and steel.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 428f97df96c876f40b18a59b75fb621d
+    m_Address: Assets/Audio/HeroHits/Miss/miss6.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 46f3b158624a076418dbe644b249010e
+    m_Address: Assets/Audio/HeroHits/Parry/mech-zvonkiy-vyisokiy-korotkiy.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 47ccae00ec236a84da8539a2b08d65d4
+    m_Address: Assets/Audio/HeroHits/Arrow/ESM_Arrow_Impact_12_Flesh_Sound_FX_Military.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4b8c24cfe8f8c784685370131cac547f
+    m_Address: Assets/Audio/HeroHits/Voice/pain4.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4c4c62eb8745edc4da0b8a217bf73cd9
+    m_Address: Assets/Audio/Music/Emptiness of death .mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5422714f6818cc94b99e0e81c7211392
+    m_Address: Assets/Audio/HeroHits/Miss/Miss2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5bc2d31b94cd8ff428f85ae840b46004
+    m_Address: Assets/Audio/HeroHits/Sword/ESM_Sword_Kill_2_Sound_FX_Military_Gore_Blood.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5c7a10e5a6619a9439b7bd4aee88128e
+    m_Address: Assets/Audio/HeroHits/Parry/mech-dalekiy-zvonkiy-blizkiy.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 625630f548457cc45a60aaec16464735
+    m_Address: Assets/Audio/HeroHits/Voice/pain2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6502525d5c5b64a49b70bdc21c99861d
+    m_Address: Assets/Audio/HeroHits/Arrow/ESM_Arrow_Impact_5_Sound_FX_Military.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6826c79ea35821e40830ea6fa0318dff
+    m_Address: Assets/Audio/HeroHits/Voice/paino.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6c2209cb9d8281f4e9566ee7ee5f3182
+    m_Address: Assets/Audio/HeroHits/Parry/mech-zvonkiy-blizkiy-dolgiy.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6ef0b043994bb1d4fb7472017e8c8ef1
+    m_Address: Assets/Audio/HeroHits/Miss/Miss3.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7a627cc23957e3547a7789ae0980992f
+    m_Address: Assets/Audio/HeroHits/Parry/mech-vyisokiy-rezkiy.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7ce7ba5ed020fcd45bba50659047a014
+    m_Address: Assets/Audio/HeroHits/Parry/mech-nizkiy-blizkiy.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7edb50cc5a96c40409c932c1c91a9d38
+    m_Address: Assets/Audio/Sounds_add/ESM_Sword_Kill_5_Sound_FX_Military_Gore_Blood.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7f26c2f672007a449985e271a6e842e9
+    m_Address: Assets/Audio/HeroHits/Arrow/ESM_Arrow_Impact_14v2_Sound_FX_Military.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8092f5d35d85d9647b09f023da1996fe
+    m_Address: Assets/Audio/HeroHits/Sword/ESM_Sword_Kill_1_Sound_FX_Military_Gore_Blood.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 827d3c64b4c55bd4db0c2ee7a88534ab
+    m_Address: Assets/Audio/HeroHits/Arrow/ESM_Arrow_Impact_3_Sound_FX_Military.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 82a41c6d89977c34cb97d3cddb10a215
+    m_Address: Assets/Audio/HeroHits/Big/ESM_Big_Zombie_Smash_Wet_Smash_Liquid_Bash_Knife_Organic_Splat_Gore_Horror_Explosion.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 83b637c14ca031640a0b61b5b32ba79e
+    m_Address: Assets/Audio/HeroHits/Parry/mech-zvonkiy-priglushennyiy.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 83d8cf13a8aed1a4eb5165da34b045df
+    m_Address: Assets/Audio/Sounds_add/ESM_Sword_Kill_2_Sound_FX_Military_Gore_Blood.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 885d3834318ada1478b4271f7469071a
+    m_Address: Assets/Audio/HeroHits/Axe/Axe3.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8bced337395b12a49b20db80ecd56107
+    m_Address: Assets/Audio/HeroHits/Knife/ESM_Knife_Stab_Impact_1_Sound_FX_Military_Hit.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8c1b8313488b85d41b54b16639a45fc9
+    m_Address: Assets/Audio/Music/Anticipation of danger.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8c8078af14aeb214b9604e4da257463c
+    m_Address: Assets/Audio/HeroHits/Voice/pain5.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8ccf5d2de20935348b0cf7cbdaf4f35f
+    m_Address: Assets/Audio/HeroHits/Parry/mech-korotkiy-priglushennyiy.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8f65173e7df6cd346872189f860a99ea
+    m_Address: Assets/Audio/HeroHits/Miss/Miss1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9210b8a76bc61804cabc10514d531001
+    m_Address: Assets/Audio/HeroHits/Sword/ESM_Sword_Kill_5_Sound_FX_Military_Gore_Blood.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 94f68b2fa619594408a72623faba264d
+    m_Address: Assets/Audio/Music/Glory is near (bonus).mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9cc6ca41c87bd89499c2c6d060d25421
+    m_Address: Assets/Audio/Music/Castle's jail .mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9e511f126e1439c4b9eb3ca443103411
+    m_Address: Assets/Audio/HeroHits/Parry/mech-zvonkiy-yarkiy.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9eff9f2c8b75e2a47bdff069e688718b
+    m_Address: Assets/Audio/HeroHits/Spear/Spear1.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a13ba392a523b8c419585b5ca651e1e3
+    m_Address: Assets/Audio/HeroHits/Big/Big.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a4eba5596329c184c9321802f8523bf9
+    m_Address: Assets/Audio/Music/Once upon a time.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aa7090eb4899c534992e9e0d9e7665a7
+    m_Address: Assets/Audio/HeroHits/Axe/Axe.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ab2c57dd680cc2147bd48445e362cfbb
+    m_Address: Assets/Audio/Sounds_add/ESM_Sword_Kill_6_Sound_FX_Military_Gore_Blood.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ad663506061066447bacc72de4068a42
+    m_Address: Assets/Audio/HeroHits/Spear/Spear2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ad69b5a7a2dfd7242be89e161d003eaf
+    m_Address: Assets/Audio/HeroHits/Axe/Glave.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b1706bf7586b208438fea4ae34009bb4
+    m_Address: Assets/Audio/Sounds_add/ESM_Sword_Kill_3_Sound_FX_Military_Gore_Blood.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b55415ad4f5086f4586963aea0f35098
+    m_Address: Assets/Audio/HeroHits/Voice/pain3.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: babf0feb7100f6f42b0bacf3c9a64a1a
+    m_Address: Assets/Audio/HeroHits/Parry/mech-korotkiy-chetkiy-v-prostranstve.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bb4915c94c9701d4e964c952582ecf53
+    m_Address: Assets/Audio/HeroHits/Big/BigKnife.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bde24b9368a9efe45a2a5f4bba971129
+    m_Address: Assets/Audio/Music/Old dangerous castle .mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c1c6db611b78f6b4689ffc4396a71064
+    m_Address: Assets/Audio/HeroHits/Miss/Miss4.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c6bd887b2b4e56740bd0197cf8b570b5
+    m_Address: Assets/Audio/Music/Meeting with the unknown.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c8ce260ae5c78804e9520eb912a0464a
+    m_Address: Assets/Audio/HeroHits/Voice/painh.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d0f18b3f03e8f484689ada991e583da8
+    m_Address: Assets/Audio/HeroHits/udar-s-loktya-v-chelyust.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d5abee4ee1ba284438f809898e207a8a
+    m_Address: Assets/Audio/HeroHits/Axe/Axe2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d64c04e41789b1b49a6439817a0557e3
+    m_Address: Assets/Audio/HeroHits/Parry/mech-zvonkiy-v-prostranstve-blizkiy.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d7187edaa5f8a21459ed1f567b2b0e42
+    m_Address: Assets/Audio/Music/Tough fight.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d938b55ad627f9044967ea229fa58868
+    m_Address: Assets/Audio/HeroHits/Big/BigKnife3.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: de1a60c1275a436459ece3421cc3e92b
+    m_Address: Assets/Audio/HeroHits/Axe/Glave2.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dff21be5ed489f54fbf00fce387b862e
+    m_Address: Assets/Audio/HeroHits/Arrow/ESM_Arrow_Impact_1_Sound_FX_Military.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e39c4e31e30034647be84f56e2ead6ce
+    m_Address: Assets/Audio/Music/Hiding in shadow (bonus).mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e7d44af6581a8eb42888452a95c9d4c6
+    m_Address: Assets/Audio/HeroHits/Knife/ESM_Knife_Stab_Impact_2_Sound_FX_Military_Hit.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ea611d655e88c934fa1aed7379fd6a63
+    m_Address: Assets/Audio/HeroHits/Parry/mech-odinochnyiy-blizkiy-zvonkiy.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ecaa2093dd35a0c47a2ce837bf326e91
+    m_Address: Assets/Audio/HeroHits/Parry/mech-odinochnyiy-korotkiy-vyisokiy.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eddc6fec8c3363d4b98424139530f4e2
+    m_Address: Assets/Audio/HeroHits/Sword/ESM_Sword_Kill_4_Sound_FX_Military_Gore_Blood.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f584d4849fdc6ee46a527055986916d0
+    m_Address: Assets/Audio/HeroHits/Miss/Miss5.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fa43c4384c1d25443beda84a507c99fa
+    m_Address: Assets/Audio/Music/This empty dungeon.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: faa96587bb369e941b24bf63b87b45bd
+    m_Address: Assets/Audio/HeroHits/Sword/ESM_Sword_Kill_3_Sound_FX_Military_Gore_Blood.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fd05d9841b65eed458afd7bb800b3f3e
+    m_Address: Assets/Audio/Music/Dark experiment.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 7d7b5ecf4d519ff49a83901c45f4be2d, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: b27d7257fd4029349a86b1c91fcfff0a, type: 2}
+    - {fileID: 11400000, guid: 586963fcd19eddb41b93944732c47b16, type: 2}

@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: PlayerHealthConfig
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealthConfigSO
+  baseMaxHealth: 50
+  healthPerLevel: 25
+  maxHealthCap: 175
+  baseBleedSpeed: 18
+  slowBleedThreshold: 2
+  slowBleedSpeed: 0.5
+  deathSlowMoDuration: 0.2
+  deathSlowMoIntensity: 0.2
+  slowMoPower: 0.8
+  cameraSize: 1.2
+  shakeDuration: 6
+  staggerDuration: 2.2
+  concentrationDecaySpeed: 15
+  concentrationStaggerThreshold: 100
+  shieldBasePower: 0.3
+  shieldReductionPerLevel: 0.05
+  minShieldPower: 0.1
+  armoredShieldReduction: 0.4
