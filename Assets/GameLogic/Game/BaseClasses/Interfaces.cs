@@ -9,7 +9,7 @@ public interface IHealth
     IReadOnlyReactiveProperty<HealthState> State { get; }
     IReadOnlyReactiveProperty<bool> IsLowHealth { get; }
     
-    bool TakeDamage(DamageData damageData);
+    (bool, bool) TakeDamage(DamageData damageData);
     void Heal(int amount);
 }
 

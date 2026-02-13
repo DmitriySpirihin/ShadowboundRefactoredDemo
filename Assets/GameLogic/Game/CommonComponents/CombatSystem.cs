@@ -2,15 +2,22 @@ using UnityEngine;
 using GameEnums;
 using System.Collections;
 using System.Collections.Generic;
+using Zenject;
+using Unity.Cinemachine;
 
 public class CombatSystem : MonoBehaviour
 {
+    [Inject] private ConcentrationSystem _concentrationSystem;
+    [Inject] private IAnimationService _animationService;
+    [Inject] private Animator _animator;
     // I've made the system where everyone can damage everyone by design
     [Header("Variables")]
     [SerializeField] private WeaponType weaponType;
     [SerializeField] private float baseDamage;
     [SerializeField] private float multiplier = 1f;
     [SerializeField] private float succsessHitDelay = 1f;
+    [Range(10f, 80f)][SerializeField] private float reduceConcentrationAmount = 25f;
+    [Range(1f, 20f)][SerializeField] private float baseRestoreConcentrationAmount = 10f;
     [SerializeField] private int successHitCounter;
     [SerializeField] private int maxAttackNum;
     
@@ -52,13 +59,6 @@ public class CombatSystem : MonoBehaviour
                         if (destructable != null && !_enemiesSet.Contains(destructable))
                         {
                             _enemiesSet.Add(destructable);
-                            
-                            if (hit.transform.TryGetComponent<ParrySystem>(out Parrysystem parrySystem))
-                            {
-                                if(parrySystem.IsParrying.Value) SetParryFeedback();
-                                successHitCounter = 0;
-                                return;
-                            }
 
                             bool isCrit = successHitCounter > 0 && Random.Range(0, 10) < (2 + successHitCounter);
 
@@ -66,8 +66,20 @@ public class CombatSystem : MonoBehaviour
 
                             if (hit.transform.TryGetComponent<IHealth>(out IHealth health))
                             {
-                               bool success = health.TakeDamage(damData);
-                               if (success && successHitCounter < 5) successHitCounter++;
+                               // first bool if hit registered , second if hit was parried
+                               (bool, bool) hitResult = health.TakeDamage(damData);
+                               if (hitResult.Item2) // parried
+                               {
+                                  _animationService.SetState(_animator, AnimStates.Staggered, true);
+                                  _concentrationSystem.ReduceConcentration(reduceConcentrationAmount);
+                                  successHitCounter = 0;
+                                  return;
+                               }
+                               else if (hitResult.Item1 && successHitCounter < 5)
+                                {
+                                    _concentrationSystem.RestoreConcentration(baseRestoreConcentrationAmount * successHitCounter);
+                                    successHitCounter++;
+                                }
                                else successHitCounter = 0;                  
                             }
                             else destructable.Destruct(damData);

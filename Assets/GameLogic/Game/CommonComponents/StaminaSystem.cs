@@ -26,7 +26,7 @@ public abstract class BaseStamina : MonoBehaviour, IStamina
         _cooldownRoutine = StartCoroutine(CooldownRoutine());
       }
       if (_restoreRoutine != null) StopCoroutine(_restoreRoutine);
-        _restoreRoutine = StartCoroutine(CooldownRoutine());
+        _restoreRoutine = StartCoroutine(RestoreRoutine());
    }
    
     protected IEnumerator CooldownRoutine()
@@ -40,7 +40,7 @@ public abstract class BaseStamina : MonoBehaviour, IStamina
        while (_currentStamina.Value < 100f)
        {
           yield return new WaitForSeconds(0.05f);
-          _currentStamina.Value += regenerationSpeed;
+          if(!isCooldown) _currentStamina.Value += regenerationSpeed;
        }
     }
 

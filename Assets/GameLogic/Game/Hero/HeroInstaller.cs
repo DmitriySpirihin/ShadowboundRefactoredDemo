@@ -1,32 +1,37 @@
 using Zenject;
 using UnityEngine;
-using GameEnums;
 
-[RequireComponent(typeof(HeroController))]
-[RequireComponent(typeof(HeroHealth))]
-[RequireComponent(typeof(CombatSystem))]
-
-public class HeroInstaller : MonoInstaller<HeroInstaller>
+public class HeroInstaller : MonoInstaller
 {
-    // === CONFIGURATION ===
-    [Header("Core Configs")]
+    [Header("Configuration")]
     [SerializeField] private PlayerHealthConfigSO _healthConfig;
-    [SerializeField] private HeroHealth heroHealth;
-    [SerializeField] private CharacterVFXManager vFXManager;
 
     public override void InstallBindings()
     {
         BindConfigs();
+        BindCoreSystems();
     }
 
     private void BindConfigs()
     {
-       Container.BindInstance(_healthConfig).WhenInjectedInto<HeroHealth>();
-       Container.Bind<IVfxService>().To<CharacterVFXManager>().FromInstance(vFXManager);
-       Container.Bind<IHealth>().To<HeroHealth>().FromInstance(heroHealth);
+        Container.Bind<PlayerHealthConfigSO>().FromInstance(_healthConfig).WhenInjectedInto<HeroHealth>();
     }
 
-    
+    private void BindCoreSystems()
+    {
+        Container.Bind<IHealth>().To<HeroHealth>().FromComponentOn(gameObject).AsSingle();
+        Container.Bind<IStamina>().To<StaminaWithShield>().FromComponentOn(gameObject).AsSingle();
+        Container.Bind<HeroController>().FromComponentOn(gameObject).AsSingle();
+        Container.Bind<CombatSystem>().FromComponentOn(gameObject).AsSingle();
+        Container.Bind<ParrySystem>().FromComponentOn(gameObject).AsSingle();
+        Container.Bind<EnvironmentDetector>().FromComponentOn(gameObject).AsSingle();
+        Container.Bind<ShieldSystem>().FromComponentOn(gameObject).AsSingle();
+        Container.Bind<Rigidbody2D>().FromComponentOn(gameObject).AsSingle();
+        Container.Bind<Animator>().FromComponentOn(gameObject).AsSingle();
+        Container.Bind<SpriteRenderer>().FromComponentOn(gameObject).AsSingle();
+        Container.Bind<IVfxService>().To<CharacterVFXManager>().FromComponentOn(gameObject).AsSingle();
+        Container.Bind<ConcentrationSystem>().FromComponentOn(gameObject).AsSingle();
+    }
 }
 
 

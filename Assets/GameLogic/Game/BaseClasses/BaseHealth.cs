@@ -31,10 +31,10 @@ public abstract class BaseHealth<TConfig> : MonoBehaviour, IHealth, IDestructabl
     [Inject] protected IAudioService _audioManager;
     
     // references
-    protected Animator _animator;
-    protected Rigidbody2D _rigidbody;
-    protected AudioSource _audioSource;
-    protected CharacterVFXManager _vFXManager;
+    [Inject]protected Animator _animator;
+    [Inject]protected Rigidbody2D _rigidbody;
+    [Inject]protected AudioSource _audioSource;
+    [Inject]protected CharacterVFXManager _vFXManager;
     protected CompositeDisposable _disposables = new CompositeDisposable();
     
     protected float _bleedSpeed;
@@ -51,10 +51,6 @@ public abstract class BaseHealth<TConfig> : MonoBehaviour, IHealth, IDestructabl
         _currentHealth.Value = _maxHealth.Value;
         _currentTempHealth.Value = _maxHealth.Value;
         _bleedSpeed = _config.baseBleedSpeed;
-
-        _animator = GetComponent<Animator>();
-        _rigidbody = GetComponent<Rigidbody2D>();
-        _vFXManager = GetComponent<CharacterVFXManager>();
     }
     
     protected virtual void Update()
@@ -62,9 +58,9 @@ public abstract class BaseHealth<TConfig> : MonoBehaviour, IHealth, IDestructabl
         HandleTempHealthBleeding();
     }
     
-    public virtual bool TakeDamage(DamageData damageData)
+    public virtual (bool, bool) TakeDamage(DamageData damageData) // return (hit regisrered , parry registered)
     {
-        if (_state.Value != HealthState.Alive || _isDestructing) return false;
+        if (_state.Value != HealthState.Alive || _isDestructing) return (false, false);
         
         float effectiveDamage = Mathf.Max(damageData.BaseDamage, 1f);
         // Apply to temp health first
@@ -81,14 +77,14 @@ public abstract class BaseHealth<TConfig> : MonoBehaviour, IHealth, IDestructabl
             if (_currentHealth.Value <= 0 && !_isDestructing)
             {
                 Destruct(damageData);
-                return true;
+                return (true, false);
             }
 
             OnDamageTaken(finalDamage, damageData);
         }
         
         TriggerDamageFeedback(damageData, effectiveDamage);
-        return true;
+        return (true, false);
     }
     
     protected virtual void OnDamageTaken(int damageAmount, DamageData damageData) { }

@@ -10,7 +10,7 @@ public class SpriteBloodStained : MonoBehaviour
     [SerializeField] private float damageThreshold = 5f;
     [SerializeField] private float minRecoveryTime = 4f;
     [SerializeField] private float maxRecoveryTime = 9f;
-    private SpriteRenderer _spriteRenderer;
+    [Inject] private SpriteRenderer _spriteRenderer;
     [Inject] private IHealth _health;
 
     private int currentIndex;
@@ -29,7 +29,6 @@ public class SpriteBloodStained : MonoBehaviour
             return;
         }
         lastHealthValue = _health.MaxHealth.Value;
-        _spriteRenderer = GetComponent<SpriteRenderer>();
         _health.CurrentHealth.Subscribe(val => HandleHit(val)).AddTo(_disposables);
     }
 

@@ -41,6 +41,7 @@ public class AnimationMapper : IAnimationService
     public readonly int ThrowHash = Animator.StringToHash("Throw");
     public readonly int ParryHash = Animator.StringToHash("Parry");
     public readonly int JumpHash = Animator.StringToHash("Jump");
+    public readonly int HasConcentrationHash = Animator.StringToHash("HasConcentration");
 
     public readonly int CanMoveHash = Animator.StringToHash("CanMove");
     public readonly int VelocityXHash = Animator.StringToHash("VelocityX");
@@ -64,6 +65,7 @@ public class AnimationMapper : IAnimationService
             case AnimStates.Destruct:  animator.SetBool(DestructHash, value);  break;
             case AnimStates.Staggered:  animator.SetBool(StaggeredHash, value);  break;  
             case AnimStates.CanMove:  animator.SetBool(CanMoveHash, value);  break; 
+            case AnimStates.HasConcentration:  animator.SetBool(HasConcentrationHash, value);  break;
         }
     }
 

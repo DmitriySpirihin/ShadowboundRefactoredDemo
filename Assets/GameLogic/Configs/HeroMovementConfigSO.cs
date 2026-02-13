@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "HeroMovementConfig", menuName = "Scriptable Objects/HeroMovementConfig")]
-public class HeroMovementConfig : ScriptableObject
+public class HeroMovementConfigSO : ScriptableObject
 {
     [Header("Movement settings")]
     public float speed = 5f;

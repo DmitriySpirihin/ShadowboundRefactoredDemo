@@ -3,14 +3,13 @@ namespace GameEnums
     public enum HealthState { Alive, Dead, Invincible }
     public enum WeaponType { Sword, Glave, Dagger,Arrow, Projectile, Magic, Unarmed, Spear, Heavy, Parry, Miss, Death }
     
-    public enum States { Idle, isDead, CanSuperAttack, MoovingBack, Cling, Slide, Grounded,Shielded, Charging, InWeb, IsBackStrike, Destruct, Staggered }
     public enum Triggers { AirAttack, WallJump, Climb, DoubleJump, Dash, Attack, MagicAttack, Hit, Execute, Throw, Parry }
 
     public enum GameState {Running, Paused}
 
     public enum ButtonType {DoJump, DoShield, DoParry, DoAttack, DoRoll, DoMagic}
 
-    public enum AnimStates { Idle,isDead,CanSuperAttack,MoovingBack,Cling,Slide,Grounded,Shielded,Charging,InWeb,IsBackStrike,Destruct,Staggered,CanMove}
+    public enum AnimStates { Idle,isDead,CanSuperAttack,MoovingBack,Cling,Slide,Grounded,Shielded,Charging,InWeb,IsBackStrike,Destruct,Staggered,CanMove, HasConcentration}
     public enum AnimTriggers { Jump,AirAttack,WallJump,Climb,DoubleJump,Dash,Attack,MagicAttack,Hit,Execute,Throw,Parry}
     public enum AnimValues  { VelocityX, VelocityY, AttackNum}
 

@@ -11,9 +11,9 @@ public class OnScreenButton : MonoBehaviour,IPointerDownHandler,IPointerUpHandle
     [SerializeField] private Vector3 startSize = new Vector3(2f,2f,2f);
     [SerializeField] private Vector3 pressedSize = new Vector3(2.5f,2.5f,2.5f);
 
-    Color startColor = new Color(0.5f,0.5f,0.5f,0.5f);
-    RectTransform _rectTransform;
-    Image _image;
+    private Color startColor = new Color(0.5f,0.5f,0.5f,0.5f);
+    private RectTransform _rectTransform;
+    private Image _image;
     
     void Start()
     {
@@ -27,9 +27,11 @@ public class OnScreenButton : MonoBehaviour,IPointerDownHandler,IPointerUpHandle
       _rectTransform.localScale = pressedSize;
       switch (type)
       {
-         case ButtonType.DoJump:
-           
-         break;
+         case ButtonType.DoJump:  _heroController.OnJump(); break;
+         case ButtonType.DoAttack:  _heroController.OnAttack(); break;
+         case ButtonType.DoParry:  _heroController.OnParry(); break;
+         case ButtonType.DoRoll:  _heroController.OnRoll(); break;
+         case ButtonType.DoShield:  _heroController.OnShieldUp(); break;
       }
       
     }
@@ -39,10 +41,7 @@ public class OnScreenButton : MonoBehaviour,IPointerDownHandler,IPointerUpHandle
       _rectTransform.localScale = startSize;
       switch (type)
       {
-        case ButtonType.DoParry:
-
-         break;
+         case ButtonType.DoShield:  _heroController.OnShieldDown(); break;
       }
     }
-    
 }

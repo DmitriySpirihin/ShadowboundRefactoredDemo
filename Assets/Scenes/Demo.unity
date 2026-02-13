@@ -8786,6 +8786,7 @@ GameObject:
   m_Component:
   - component: {fileID: 751808750}
   - component: {fileID: 751808751}
+  - component: {fileID: 751808752}
   m_Layer: 0
   m_Name: ConcentrationBar
   m_TagString: Untagged
@@ -8867,6 +8868,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &751808752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 751808749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 490eb16143465cb4a84f0cb0e758141e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!1 &754205572
 GameObject:
   m_ObjectHideFlags: 0
@@ -27850,6 +27863,7 @@ GameObject:
   - component: {fileID: 1769183029}
   - component: {fileID: 1769183030}
   - component: {fileID: 1769183031}
+  - component: {fileID: 1769183032}
   m_Layer: 7
   m_Name: Hero
   m_TagString: Hero
@@ -28206,14 +28220,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1769182999}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9abaf5707acc8334993dbf4006052c2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HeroInstaller
   _healthConfig: {fileID: 0}
-  heroHealth: {fileID: 0}
-  vFXManager: {fileID: 0}
 --- !u!114 &1769183022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28250,6 +28262,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c6ecd43f36106246a49c7c70e3dc058, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnimatorEventsRouter
+  _objectToDisable: {fileID: 0}
 --- !u!114 &1769183025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28262,6 +28275,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7da84d2a18c5d91408f3a80b0a7ecb47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CombatSystem
+  weaponType: 0
+  baseDamage: 12
+  multiplier: 1
+  succsessHitDelay: 1
+  reduceConcentrationAmount: 25
+  baseRestoreConcentrationAmount: 10
+  successHitCounter: 0
+  maxAttackNum: 0
+  mask:
+    serializedVersion: 2
+    m_Bits: 2304
+  raySize: 0
+  rayOffset: {x: 0, y: 0}
+  needToDrawGizmos: 0
+  debugPreviewSlashType: 1
 --- !u!114 &1769183027
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28355,6 +28383,9 @@ MonoBehaviour:
   - {fileID: -184821103, guid: 512aa1694d168804f985d327bcf6e562, type: 3}
   - {fileID: 649384536, guid: 512aa1694d168804f985d327bcf6e562, type: 3}
   - {fileID: 802945964, guid: 512aa1694d168804f985d327bcf6e562, type: 3}
+  damageThreshold: 5
+  minRecoveryTime: 4
+  maxRecoveryTime: 9
 --- !u!114 &1769183031
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28372,8 +28403,30 @@ MonoBehaviour:
   maxForceX: 17.53
   minForceY: 25.78
   maxForceY: 69.49
-  minTorque: 5.52
+  minTorque: 10
   maxTorque: 27.7
+--- !u!114 &1769183032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1769182999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fb1d1185d873a145a56e4f5baa800d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  _audioBank:
+  - Name: step
+    Clip: {fileID: 8300000, guid: a50cc1cdb8bb45e4d9c909962d0c2abe, type: 3}
+    Volume: 0.445
+  - Name: roll
+    Clip: {fileID: 8300000, guid: 5999ff28dadbdb3418c9c8b2983593d2, type: 3}
+    Volume: 0.666
+  - Name: dash
+    Clip: {fileID: 8300000, guid: 16caf2938988b794faa5fec481f5dc05, type: 3}
+    Volume: 0.537
 --- !u!1 &1771194620
 GameObject:
   m_ObjectHideFlags: 0
@@ -28468,6 +28521,47 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c4f5663baa4dfe40a21be577e186001, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HeroBarsPresenter
+  heartsFillTemp:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  heartsFill:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  heartFrames:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  perHeartAmount: 25
+  staminaFill:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  staminaFrames:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &1780895623
 GameObject:
   m_ObjectHideFlags: 0
