@@ -9,15 +9,14 @@ public class HeroHealth : BaseHealth<PlayerHealthConfigSO>
 {
     [Inject] private ShieldSystem _shieldSystem;   
     [Inject] private ParrySystem _parrySystem; 
-    [Inject] private IStamina _staminaSystem;
     private ReactiveProperty<bool> _isStaggered = new ReactiveProperty<bool>(false);
-    private float _staggerTimer;
     private bool isInvincible;
     
     public IReadOnlyReactiveProperty<bool> IsStaggered => _isStaggered;
     
     public override (bool, bool) TakeDamage(DamageData damageData)
     {
+        if(isInvincible) return (false, false);
         if (_parrySystem.IsParrying.Value)
         {
             
@@ -37,6 +36,8 @@ public class HeroHealth : BaseHealth<PlayerHealthConfigSO>
     {
         _cameraMoovement.SlowMotionEffect(false,this.transform , _config.slowMoPower , _config.cameraSize);
     }
+
+    public void ChangeInvincibility(bool value) => isInvincible = value;
     
     public override void Destruct(DamageData cause)
     {

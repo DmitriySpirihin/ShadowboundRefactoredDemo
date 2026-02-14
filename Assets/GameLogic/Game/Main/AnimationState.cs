@@ -6,11 +6,6 @@ using Cysharp.Threading.Tasks;
 using Zenject;
 using GameEnums;
 
-public interface IAnimationService
-{
-    void SetState(Animator animator, AnimStates state, bool value);
-    void SetTrigger(Animator animator, AnimTriggers trigger);
-}
 
 public class AnimationMapper : IAnimationService
 {

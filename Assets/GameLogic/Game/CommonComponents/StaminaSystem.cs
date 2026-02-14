@@ -17,16 +17,20 @@ public abstract class BaseStamina : MonoBehaviour, IStamina
  
    public virtual void ReduceStamina(float amount)
    {
-      float nextValue = Mathf.Max(0, _currentStamina.Value - amount);
-      _currentStamina.Value = nextValue;
-      if (nextValue == 0)
+     float nextValue = Mathf.Max(0, _currentStamina.Value - amount);
+     _currentStamina.Value = nextValue;
+    
+      if (_restoreRoutine != null) StopCoroutine(_restoreRoutine);
+    
+      if (nextValue == 0 && !isCooldown)
       {
         isCooldown = true;
-        if (_cooldownRoutine != null) StopCoroutine(_cooldownRoutine);
         _cooldownRoutine = StartCoroutine(CooldownRoutine());
       }
-      if (_restoreRoutine != null) StopCoroutine(_restoreRoutine);
+      else if (nextValue > 0 && !isCooldown)
+      {
         _restoreRoutine = StartCoroutine(RestoreRoutine());
+      }
    }
    
     protected IEnumerator CooldownRoutine()
