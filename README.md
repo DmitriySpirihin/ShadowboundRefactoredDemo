@@ -1,7 +1,7 @@
 # ShadowBound — Мрачный 2D Souls-like экшен от одного разработчика
 
 [![itch.io](https://img.shields.io/badge/itch.io-Скачать_игру-orange?logo=itch.io&style=for-the-badge)](https://dmitriy-spirikhin.itch.io/shadowbound)
-[![Unity 2022 LTS](https://img.shields.io/badge/Unity-6000.2?logo=unity&style=for-the-badge)](https://unity.com)
+[![Unity 2022 LTS](https://img.shields.io/badge/Unity-6000.2-222222?logo=unity&style=for-the-badge)](https://unity.com)
 [![C#](https://img.shields.io/badge/C%23-100%25-239120?logo=csharp&style=for-the-badge)]()
 
 > «Тени не убивают — они лишь ждут, пока ты устанешь бороться…»
