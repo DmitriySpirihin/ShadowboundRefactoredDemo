@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CharacterVFXManager : MonoBehaviour , IVfxService
 {
-    [SerializeField] private Transform tempVfxHolder;
+    [SerializeField] private Transform tempVfxHolder, parentTr;
     [SerializeField] private VfxName[] vfxKeys;
     [SerializeField] private GameObject[] vfxPrefabs;
     private Dictionary<VfxName, GameObject> vfxBank = new Dictionary<VfxName, GameObject>();
@@ -57,7 +57,7 @@ public class CharacterVFXManager : MonoBehaviour , IVfxService
         localPosBank[vfxName] = vfx.transform.localPosition;
         vfx.SetActive(true);
         // disable parent binding
-        if(tempVfxHolder != null) vfx.transform.SetParent(tempVfxHolder,false);
+        if(tempVfxHolder != null) vfx.transform.SetParent(tempVfxHolder,true);
         // back on start position
         StartCoroutine(SetObjectBackRoutine(vfx, localPosBank[vfxName], 1f));
     }
@@ -80,7 +80,7 @@ public class CharacterVFXManager : MonoBehaviour , IVfxService
             if (poolableVfx.enabledVfxes[i])
             {
                 poolableVfx.objects[i].SetActive(true);
-                if(tempVfxHolder != null) poolableVfx.objects[i].transform.SetParent(tempVfxHolder,false);
+                if(tempVfxHolder != null) poolableVfx.objects[i].transform.SetParent(tempVfxHolder,true);
                 poolableVfx.enabledVfxes[i] = false;
                 StartCoroutine(CheckParticlesLifeTimeRoutine(poolableVfx, poolableVfx.objects[i], i));
                 break;
@@ -93,7 +93,8 @@ public class CharacterVFXManager : MonoBehaviour , IVfxService
         yield return new WaitForSeconds(poolableVfx.duration);
         if (this == null || vfx == null || poolableVfx == null) yield break;
         vfx.SetActive(false);
-        vfx.transform.SetParent(transform);
+        vfx.transform.SetParent(parentTr,true);
+        vfx.transform.localScale = new Vector3(1f, 1f, 1f);
         vfx.transform.localPosition = poolableVfx.localPositions[index];
         poolableVfx.enabledVfxes[index] = true;
     }
@@ -102,7 +103,8 @@ public class CharacterVFXManager : MonoBehaviour , IVfxService
         yield return new WaitForSeconds(duration);
         if (this == null) yield break;
         vfx.SetActive(false);
-        vfx.transform.SetParent(transform);
+        vfx.transform.SetParent(parentTr,true);
+        vfx.transform.localScale = new Vector3(1f, 1f, 1f);
         vfx.transform.localPosition = localPos;
     }
 

@@ -78,8 +78,10 @@ public class AudioManager :  MonoBehaviour, IAudioService, IDisposable
        if (loadedClips != null && loadedClips.Length > 0)
        {
           AudioClip clip = loadedClips[UnityEngine.Random.Range(0, loadedClips.Length)];
+          Debug.Log(clip.name);
           source.PlayOneShot(clip, _gameData.SoundVolume.Value * Mathf.Min(volumeMultiplier, 1f));
        }
+       else Debug.Log("Clips was not loaded");
     }
 
     private async UniTask<AudioClip[]> LoadSoundBankAsync(AssetReference[] assetReferences)
@@ -165,8 +167,4 @@ public class AudioManager :  MonoBehaviour, IAudioService, IDisposable
     }
 }
 
-public interface IAudioService
-{
-    public void PlayHitSound(AudioSource source, WeaponType weaponType, float volumeMultiplier = 1f);
-    public void PlayCustomSound(AudioSource source, AudioClip clip, float volumeMultiplier);
-}
+

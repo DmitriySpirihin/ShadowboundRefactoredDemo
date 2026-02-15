@@ -21,14 +21,10 @@ public class MusicMaster : MonoBehaviour, IDisposable
     {
         _source = GetComponent<AudioSource>();
         _source.loop = true;
-        // Подписка на изменение громкости музыки
-        _gameData.MusicVolume
-            .Subscribe(OnMusicVolumeChanged)
-            .AddTo(_disposables);
-       
+        _gameData.MusicVolume.Subscribe(OnMusicVolumeChanged).AddTo(_disposables);
         StartCoroutine(LoadAndPlayClip(musicRefs[UnityEngine.Random.Range(0,musicRefs.Length)]));
     }
-    // Плавное изменение громкости без лишних проверок в Update
+    
     private void OnMusicVolumeChanged(float targetVolume)
     {
         if (_crossfadeRoutine != null)
@@ -59,14 +55,12 @@ public class MusicMaster : MonoBehaviour, IDisposable
     
     private IEnumerator LoadAndPlayClip(AssetReference clipRef)
     {
-        // Отмена предыдущей загрузки
         if (_currentClip != null)
         {
             Addressables.Release(_currentClip);
             _currentClip = null;
         }
         
-        // Загрузка нового клипа
         AsyncOperationHandle<AudioClip> handle = Addressables.LoadAssetAsync<AudioClip>(clipRef);
         yield return handle;
         
@@ -75,7 +69,6 @@ public class MusicMaster : MonoBehaviour, IDisposable
             _currentClip = handle.Result;
             _source.clip = _currentClip;
             
-            // Плавный кроссфейд к новому треку
             float targetVolume = _gameData.MusicVolume.Value;
             _source.volume = 0f;
             _source.Play();
@@ -92,7 +85,6 @@ public class MusicMaster : MonoBehaviour, IDisposable
 
     private IEnumerator WaitForClipEnd(AudioClip clip)
     {
-        // ждём до конца трека с небольшим буфером
         yield return new WaitForSeconds(clip.length - 0.1f);
         
         while (_source.isPlaying && _source.time >= clip.length - 0.1f * 2f)
@@ -105,7 +97,6 @@ public class MusicMaster : MonoBehaviour, IDisposable
     }
 
     
-    // выгрузка ресурсов 
     private void OnDestroy()
     {
         Dispose();

@@ -13,7 +13,7 @@ public class AnimationMapper : IAnimationService
     // Hashes for Animation Parameters
     public readonly int IdleHash = Animator.StringToHash("Idle");
     public readonly int DeadHash = Animator.StringToHash("Dead");
-    public readonly int SuperAttackHash = Animator.StringToHash("SuperAttack");
+    public readonly int SuperAttackHash = Animator.StringToHash("CanSuperAttack");
     public readonly int MoovingBackHash = Animator.StringToHash("MoovingBack");
     public readonly int ClingHash = Animator.StringToHash("Cling");
     public readonly int SlideHash = Animator.StringToHash("Slide");
@@ -35,12 +35,12 @@ public class AnimationMapper : IAnimationService
     public readonly int ExecuteHash = Animator.StringToHash("Execute");
     public readonly int ThrowHash = Animator.StringToHash("Throw");
     public readonly int ParryHash = Animator.StringToHash("Parry");
-    public readonly int JumpHash = Animator.StringToHash("Jump");
+    public readonly int JumpHash = Animator.StringToHash("Jump"); 
     public readonly int HasConcentrationHash = Animator.StringToHash("HasConcentration");
 
-    public readonly int CanMoveHash = Animator.StringToHash("CanMove");
     public readonly int VelocityXHash = Animator.StringToHash("VelocityX");
     public readonly int VelocityYHash = Animator.StringToHash("VelocityY");
+    public readonly int AttackNumHash = Animator.StringToHash("AttackNum");
 
     public void SetState(Animator animator, AnimStates state, bool value)
     {
@@ -59,7 +59,6 @@ public class AnimationMapper : IAnimationService
             case AnimStates.IsBackStrike:  animator.SetBool(IsBackStrikeHash, value);  break;
             case AnimStates.Destruct:  animator.SetBool(DestructHash, value);  break;
             case AnimStates.Staggered:  animator.SetBool(StaggeredHash, value);  break;  
-            case AnimStates.CanMove:  animator.SetBool(CanMoveHash, value);  break; 
             case AnimStates.HasConcentration:  animator.SetBool(HasConcentrationHash, value);  break;
         }
     }
@@ -70,7 +69,7 @@ public class AnimationMapper : IAnimationService
         {
             case AnimValues.VelocityX:  animator.SetFloat(VelocityXHash, value);  break;  
             case AnimValues.VelocityY:  animator.SetFloat(VelocityYHash, value);  break;
-            case AnimValues.AttackNum:  animator.SetFloat(VelocityYHash, num);  break;   
+            case AnimValues.AttackNum:  animator.SetInteger(AttackNumHash, num);  break;   
         }
     }
 
@@ -108,11 +107,10 @@ public class AnimationMapper : IAnimationService
         try
         {
             await UniTask.Delay(100, cancellationToken: token);
-             animator.ResetTrigger(JumpHash);
+            animator.ResetTrigger(JumpHash);
             animator.ResetTrigger(AirAttackHash);
             animator.ResetTrigger(WallJumpHash);
             animator.ResetTrigger(ClimbHash);
-            animator.ResetTrigger(DoubleJumpHash);
             animator.ResetTrigger(DashHash);
             animator.ResetTrigger(AttackHash);
             animator.ResetTrigger(MagicAttackHash);

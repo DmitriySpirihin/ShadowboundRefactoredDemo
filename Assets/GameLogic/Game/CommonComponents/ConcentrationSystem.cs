@@ -6,10 +6,10 @@ using GameEnums;
 
 public class ConcentrationSystem : MonoBehaviour
 {
-   [Inject] private AnimationMapper _animationService;
+   [Inject] private IAnimationService _animationService;
    [Inject] private CameraMoovement _cameraMoovement;
-   [Inject] private Animator _animator;
-   [Inject] protected PlayerHealthConfigSO _config;
+   [SerializeField] private Animator _animator;
+   [SerializeField] private HealthConfigSO _config;
 
    [SerializeField] private float maxCooldown;
    [SerializeField] private float regenerationSpeed;

@@ -22,6 +22,8 @@ public class GameConfigSO : ScriptableObject
     [Header("Progression")]
     public int defaultSwordLevel = 0;
     public int defaultArmorLevel = 0;
+    public int defaultHealthLevel = 5;
+    public int defaultStaminaLevel = 3;
     
     private void OnValidate()
     {

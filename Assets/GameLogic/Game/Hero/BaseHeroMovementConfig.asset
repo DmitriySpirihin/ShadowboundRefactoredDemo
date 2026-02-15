@@ -12,11 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11bf4b5abca1ed743b2f96b35b29ed66, type: 3}
   m_Name: BaseHeroMovementConfig
   m_EditorClassIdentifier: Assembly-CSharp::HeroMovementConfig
-  speed: 5
-  shieldedSpeedMultiplier: 0.3
-  moveDelay: 0.2
-  jumpHeight: 12
-  doubleJumpHeight: 10
-  wallSlideSpeed: -2
-  dashDistance: 7
-  rollDistance: 5
+  BaseSpeed: 1.57
+  ShieldedSpeedMultiplier: 0.3
+  MoveDelay: 0.088
+  MaxDashSpeed: 12
+  MaxFallSpeed: 7
+  JumpHeight: 3.5
+  DoubleJumpHeight: 2.83
+  WallSlideSpeed: -0.54
+  CoyoteTime: 0.2
+  DashDistance: 13.75
+  RollDistance: 8.03
+  AttackComboDelay: 0.3
+  MaxComboAttacks: 2
+  SuperAttackDuration: 3
+  ParryDuration: 0.4
+  JumpStamina: 8
+  DoubleJumpStamina: 12
+  WallJumpStamina: 5
+  RollStamina: 11
+  ParryStamina: 3

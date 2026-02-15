@@ -21,6 +21,7 @@ public interface IDestructable
 
 public interface IStamina
 {
+    public IReadOnlyReactiveProperty<float> MaxStamina{get; }
     public IReadOnlyReactiveProperty<float> CurrentStamina{get; }
     public void ReduceStamina(float amount);
 }
@@ -31,4 +32,10 @@ public interface IAnimationService
     void SetState(Animator animator, AnimStates state, bool value);
     void SetTrigger(Animator animator, AnimTriggers trigger);
     public void SetValue(Animator animator, AnimValues state, float value, int num);
+}
+
+public interface IAudioService
+{
+    public void PlayHitSound(AudioSource source, WeaponType weaponType, float volumeMultiplier = 1f);
+    public void PlayCustomSound(AudioSource source, AudioClip clip, float volumeMultiplier);
 }

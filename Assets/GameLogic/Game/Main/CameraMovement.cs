@@ -6,10 +6,8 @@ using System.Collections;
 
 public class CameraMoovement : MonoBehaviour
 {
-    [Inject(Id = "HeroTr")]
-    private readonly Transform _aim;
-    [Inject]
-    private readonly GameData _gameData;
+    [Inject(Id = "HeroTr")] private readonly Transform _aim;
+    [Inject] private readonly GameData _gameData;
 
     [SerializeField]private Transform targetTransform;
     

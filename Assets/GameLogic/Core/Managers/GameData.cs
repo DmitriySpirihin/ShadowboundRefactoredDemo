@@ -21,6 +21,9 @@ public class GameData : IDisposable
     public readonly ReactiveProperty<int> Coins = new ReactiveProperty<int>();
     public readonly ReactiveProperty<int> SwordLevel = new ReactiveProperty<int>();
     public readonly ReactiveProperty<int> ArmorLevel = new ReactiveProperty<int>();
+    public readonly ReactiveProperty<int> HealthLevel = new ReactiveProperty<int>();
+    public readonly ReactiveProperty<int> StaminaLevel = new ReactiveProperty<int>();
+
     //статистика
     public readonly ReactiveProperty<int> TotalHits = new ReactiveProperty<int>();
     public readonly ReactiveProperty<int> TotalDamageDealt = new ReactiveProperty<int>();
@@ -55,6 +58,8 @@ public class GameData : IDisposable
         Coins.Value = config.defaultStartingCoins;
         SwordLevel.Value = config.defaultSwordLevel;
         ArmorLevel.Value = config.defaultArmorLevel;
+        HealthLevel.Value = config.defaultHealthLevel;
+        StaminaLevel.Value = config.defaultStaminaLevel;
     }
     
     private void LoadSave()

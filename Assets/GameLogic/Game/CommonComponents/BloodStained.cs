@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UniRx;
 using Zenject;
+using UnityEditor;
 
 [RequireComponent(typeof(SpriteRenderer))]
 public class SpriteBloodStained : MonoBehaviour
@@ -10,8 +11,8 @@ public class SpriteBloodStained : MonoBehaviour
     [SerializeField] private float damageThreshold = 5f;
     [SerializeField] private float minRecoveryTime = 4f;
     [SerializeField] private float maxRecoveryTime = 9f;
-    [Inject] private SpriteRenderer _spriteRenderer;
-    [Inject] private IHealth _health;
+    private SpriteRenderer _spriteRenderer;
+    private IHealth _health;
 
     private int currentIndex;
     private float lastHealthValue;
@@ -22,6 +23,8 @@ public class SpriteBloodStained : MonoBehaviour
 
     void Start()
     {
+        _health = GetComponent<HeroHealth>() as IHealth ?? GetComponent<EnemyHealth>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
         if (_health == null || sprites.Length == 0)
         {
             Debug.LogWarning("Ihealth was not injected or sprites array is empty , component is disabled");

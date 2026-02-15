@@ -5,7 +5,7 @@ using UniRx;
 
 public class HeroBarsPresenter : MonoBehaviour
 {
-    [Inject] private BaseHealth<HealthConfigSO> _health;
+    [Inject] private IHealth _health;
     [Inject] private IStamina _stamina;
     
     [Header("Ui health components")]
@@ -26,7 +26,7 @@ public class HeroBarsPresenter : MonoBehaviour
         // validation
         if (_health == null)
         {
-            Debug.LogError("BaseHealth not injected — HeroBarsPresenter disabled");
+            Debug.LogError("IHealth not injected — HeroBarsPresenter disabled");
             enabled = false;
             return;
         }
@@ -104,8 +104,7 @@ public class HeroBarsPresenter : MonoBehaviour
 
     private void InitializeStaminaSegments()
     {
-        const float maxStamina = 100f;
-        int maxSegments = Mathf.CeilToInt(maxStamina / perSegmentAmount);
+        int maxSegments = Mathf.CeilToInt(_stamina.MaxStamina.Value / perSegmentAmount);
         
         for (int i = 0; i < staminaFrames.Length; i++)
         {
@@ -115,7 +114,7 @@ public class HeroBarsPresenter : MonoBehaviour
             
             if (isActive && i == maxSegments - 1)
             {
-                float remainder = maxStamina % perSegmentAmount;
+                float remainder = _stamina.MaxStamina.Value % perSegmentAmount;
                 staminaFill[i].fillAmount = remainder > 0 ? remainder / perSegmentAmount : 1f;
             }
             else if (isActive)

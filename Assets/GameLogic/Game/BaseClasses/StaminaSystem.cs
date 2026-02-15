@@ -14,6 +14,8 @@ public abstract class BaseStamina : MonoBehaviour, IStamina
 
    protected readonly ReactiveProperty<float> _currentStamina = new ReactiveProperty<float>(); 
    public IReadOnlyReactiveProperty<float> CurrentStamina => _currentStamina;
+   protected readonly ReactiveProperty<float> _maxStamina = new ReactiveProperty<float>(); 
+   public IReadOnlyReactiveProperty<float> MaxStamina => _maxStamina; 
  
    public virtual void ReduceStamina(float amount)
    {
@@ -46,6 +48,7 @@ public abstract class BaseStamina : MonoBehaviour, IStamina
           yield return new WaitForSeconds(0.05f);
           if(!isCooldown) _currentStamina.Value += regenerationSpeed;
        }
+       yield break;
     }
 
     protected virtual void OnDestroy()
@@ -54,40 +57,4 @@ public abstract class BaseStamina : MonoBehaviour, IStamina
     }
 }
 
-[RequireComponent(typeof(ShieldSystem))]
-public class StaminaWithShield : BaseStamina
-{
-   [Inject] private ShieldSystem _shieldSystem;
-   [SerializeField] private float shieldedRegenerationSpeed;
-   private bool _isShielded;
 
-   private readonly CompositeDisposable _disposables = new CompositeDisposable();
-
-    void Start()
-    {
-       if (_shieldSystem == null)
-        {
-            Debug.LogError($"The ShieldSystem component on {gameObject.name} wasn.t injected , the StaminaSystem is disabled ");
-            enabled = false;
-            return;
-        }
-
-        _shieldSystem.IsShielded.Subscribe(SetIsShielded).AddTo(_disposables);
-    }
-    
-    private void SetIsShielded(bool value) => _isShielded = value;
-
-    protected override IEnumerator RestoreRoutine()
-    {
-       while (_currentStamina.Value < 100f)
-       {
-          yield return new WaitForSeconds(0.05f);
-          _currentStamina.Value += _isShielded ? shieldedRegenerationSpeed : regenerationSpeed;
-       }
-    }
-
-    protected override void OnDestroy()
-    {
-        _disposables.Dispose();
-    }
-}

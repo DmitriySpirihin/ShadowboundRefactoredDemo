@@ -3,13 +3,14 @@ using GameEnums;
 using System.Collections;
 using System.Collections.Generic;
 using Zenject;
-using Unity.Cinemachine;
 
 public class CombatSystem : MonoBehaviour
 {
-    [Inject] private ConcentrationSystem _concentrationSystem;
+    private ConcentrationSystem _concentrationSystem;
     [Inject] private IAnimationService _animationService;
-    [Inject] private Animator _animator;
+    [Inject] private IAudioService _audioService;
+    private AudioSource _audioSource;
+    private Animator _animator;
     // I've made the system where everyone can damage everyone by design
     [Header("Variables")]
     [SerializeField] private WeaponType weaponType;
@@ -43,8 +44,16 @@ public class CombatSystem : MonoBehaviour
        { SlashType.Circle, new Vector2[] {new Vector2(0, -1), new Vector2(-1, -1), new Vector2(-1, 0), new Vector2(-1, 1), new Vector2(0, 1), new Vector2(1, 1), new Vector2(1, 0), new Vector2(1, -1)}},
     };
 
+    void Awake()
+    {
+        _concentrationSystem = GetComponent<ConcentrationSystem>();
+        _animator = GetComponent<Animator>();
+        _audioSource = GetComponent<AudioSource>();
+    }
+
     public void Hit(SlashType slashType)
     {
+        bool isMiss = true;
         _enemiesSet.Clear();
         if (_slashVectors.TryGetValue(slashType, out Vector2[] vectors))
         {
@@ -62,7 +71,7 @@ public class CombatSystem : MonoBehaviour
 
                             bool isCrit = successHitCounter > 0 && Random.Range(0, 10) < (2 + successHitCounter);
 
-                            DamageData damData = new DamageData(GetDamage(isCrit), (int)Mathf.Sign(transform.localScale.x), isCrit, weaponType);
+                            DamageData damData = new DamageData(GetDamage(isCrit), (int)-transform.localScale.x, isCrit, weaponType, 2f, 0, transform.localScale.x == hit.transform.localScale.x);
 
                             if (hit.transform.TryGetComponent<IHealth>(out IHealth health))
                             {
@@ -80,15 +89,23 @@ public class CombatSystem : MonoBehaviour
                                     _concentrationSystem.RestoreConcentration(baseRestoreConcentrationAmount * successHitCounter);
                                     successHitCounter++;
                                 }
-                               else successHitCounter = 0;                  
+                               else successHitCounter = 0; 
+                                                 
                             }
                             else destructable.Destruct(damData);
                         }
+                        isMiss = false;
                     }
                 }
             }
         }
         else Debug.LogWarning("No value in slashVectors");
+
+        if(isMiss) 
+        {
+            Debug.Log("AudioMaster is called");
+            _audioService.PlayHitSound(_audioSource, WeaponType.Miss);
+        }
         
         // Start/reset counter reset timer
         if (_resetCounterRoutine != null) StopCoroutine(_resetCounterRoutine);

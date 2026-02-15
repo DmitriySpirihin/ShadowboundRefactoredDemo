@@ -6,8 +6,7 @@ using System;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Animator))]
 [RequireComponent(typeof(CharacterVFXManager), typeof(AudioSource))]
-public abstract class BaseHealth<TConfig> : MonoBehaviour, IHealth, IDestructable 
-    where TConfig : HealthConfigSO
+public abstract class BaseHealth : MonoBehaviour, IHealth, IDestructable
 {
     //reactive
     protected readonly ReactiveProperty<float> _currentHealth = new ReactiveProperty<float>();
@@ -23,7 +22,7 @@ public abstract class BaseHealth<TConfig> : MonoBehaviour, IHealth, IDestructabl
     public IReadOnlyReactiveProperty<bool> IsLowHealth => _isLowHealth;
     
     // dependencies
-    [Inject] protected TConfig _config;
+    [SerializeField] protected HealthConfigSO _config;
     [Inject] protected IAnimationService _animationService;
     [Inject] protected GameData _gameData;
     [Inject] protected CameraMoovement _cameraMoovement;
@@ -31,10 +30,10 @@ public abstract class BaseHealth<TConfig> : MonoBehaviour, IHealth, IDestructabl
     [Inject] protected IAudioService _audioManager;
     
     // references
-    [Inject]protected Animator _animator;
-    [Inject]protected Rigidbody2D _rigidbody;
-    [Inject]protected AudioSource _audioSource;
-    [Inject]protected CharacterVFXManager _vFXManager;
+    protected Animator _animator;
+    protected Rigidbody2D _rigidbody;
+    protected AudioSource _audioSource;
+    protected CharacterVFXManager _vFXManager;
     protected CompositeDisposable _disposables = new CompositeDisposable();
     
     protected float _bleedSpeed;
@@ -42,6 +41,10 @@ public abstract class BaseHealth<TConfig> : MonoBehaviour, IHealth, IDestructabl
     
     protected virtual void Awake()
     {
+        _animator = GetComponent<Animator>();
+        _rigidbody =  GetComponent<Rigidbody2D>();
+        _audioSource = GetComponent<AudioSource>(); 
+        _vFXManager = GetComponent<CharacterVFXManager>();
         // Reactive subscriptions
         _currentHealth.Subscribe(OnHealthChanged).AddTo(_disposables);
         _state.Subscribe(OnStateChanged).AddTo(_disposables);

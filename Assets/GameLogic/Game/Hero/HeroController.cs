@@ -3,25 +3,29 @@ using UnityEngine;
 using Zenject;
 using GameEnums;
 
+[RequireComponent (typeof(Animator))]
 public class HeroController : MonoBehaviour
 {
     // DI
-    [Inject] private HeroMovementConfigSO _config;
     [Inject] private IAnimationService _animService;
     [Inject] private IInputMove _input;
-    [Inject] private Rigidbody2D _rigidbody;
-    [Inject] private EnvironmentDetector _environmentDetecter;
-    [Inject] private Animator _animator;
-    [Inject] private ShieldSystem _shieldSystem;
-    [Inject] private ParrySystem _parrySystem;
-    [Inject] private IStamina _stamina;
-    [Inject] private IHealth _health;
+
+    [SerializeField] private HeroMovementConfigSO _config;
+    [SerializeField] private Rigidbody2D _rigidbody;
+    [SerializeField] private EnvironmentDetector _environmentDetecter;
+    [SerializeField] private ShieldSystem _shieldSystem;
+    [SerializeField] private ParrySystem _parrySystem;
+    [SerializeField] private StaminaWithShield _stamina;
+    [SerializeField] private HeroHealth _health;
+    [SerializeField] private Animator _animator;
+    
 
     // Local state
     private float _coyoteTimer;
     private float _moveLockTimer;
     private float _attackComboTimer;
     private int _attackNum;
+    private bool iscomboContinue;
     private bool _canDoubleJump = true;
     private bool _canDash = true;
     private bool _isAttacking;
@@ -30,9 +34,9 @@ public class HeroController : MonoBehaviour
 
     private readonly CompositeDisposable _disposables = new();
 
-    [Inject]
-    private void Construct()
+    private void Start()
     {
+        Debug.Log(_health);
         _health.State.Where(state => state == HealthState.Dead).Subscribe(_ => enabled = false).AddTo(_disposables);
         // remove jump if grounded
         _environmentDetecter.IsGrounded.Where(grounded => grounded).Subscribe(_ => ResetJumpState()).AddTo(_disposables);
@@ -60,20 +64,19 @@ public class HeroController : MonoBehaviour
         _coyoteTimer = _environmentDetecter.IsGrounded.Value ? _config.CoyoteTime : Mathf.Max(0f, _coyoteTimer - dt);
         _moveLockTimer = Mathf.Max(0f, _moveLockTimer - dt);
         _attackComboTimer = Mathf.Max(0f, _attackComboTimer - dt);
-        if (_attackComboTimer <= 0f && _attackNum > 0) _attackNum = 0;
         _superAttackTimer = Mathf.Max(0f, _superAttackTimer - dt);
         if (_superAttackTimer <= 0f && _canSuperAttack) _canSuperAttack = false;
     }
 
     private void HandleMovement()
     {
-        bool canMove = _moveLockTimer <= 0f;
+        bool canMove = _moveLockTimer <= 0f && !_isAttacking;
         bool isGrounded = _environmentDetecter.IsGrounded.Value;
         bool isWall = _environmentDetecter.IsTouchingWall.Value;
         bool canClimb = _environmentDetecter.CanClimbLedge;
 
         // Horizontal movement
-        if (canMove && !_shieldSystem.IsShielded.Value)
+        if (canMove)
         {
             float speed = isGrounded && _shieldSystem.IsShielded.Value ? _config.GetActualShieldedSpeed() : _config.BaseSpeed;
 
@@ -138,7 +141,6 @@ public class HeroController : MonoBehaviour
         _animService.SetState(_animator, AnimStates.Grounded, _environmentDetecter.IsGrounded.Value);
         _animService.SetState(_animator, AnimStates.Shielded, _shieldSystem.IsShielded.Value);
         _animService.SetState(_animator, AnimStates.MoovingBack, _shieldSystem.IsShielded.Value && (_input.GetDirection().x * transform.localScale.x < 0f));
-        _animService.SetValue(_animator, AnimValues.AttackNum, _attackNum, _attackNum);
         _animService.SetState(_animator, AnimStates.CanSuperAttack, _canSuperAttack);
         _animService.SetState(_animator, AnimStates.CanMove, _moveLockTimer <= 0f);
     }
@@ -146,6 +148,7 @@ public class HeroController : MonoBehaviour
     // Jump
     public void OnJump()
     {
+        Debug.Log("Jump");
         if (_parrySystem.IsParrying.Value || _isAttacking || _moveLockTimer > 0f) return;
         bool isWall = _environmentDetecter.IsTouchingWall.Value;
 
@@ -170,10 +173,9 @@ public class HeroController : MonoBehaviour
         if (isWall && TryConsumeStamina(_config.WallJumpStamina))
         {
             float wallDir = -transform.localScale.x;
-            float coeff = ((wallDir > 0f && _input.GetDirection().x < 0f) || (wallDir < 0f && _input.GetDirection().x > 0f)) ? 0.4f : 0.9f;
 
             _rigidbody.gravityScale = 1f;
-            _rigidbody.linearVelocity = new Vector2(_config.BaseSpeed * wallDir * coeff, _config.JumpHeight);
+            _rigidbody.linearVelocity = new Vector2(_config.DashDistance * wallDir, _config.DoubleJumpHeight);
             _animService.SetTrigger(_animator, AnimTriggers.WallJump);
             _moveLockTimer = _config.MoveDelay;
         }
@@ -183,18 +185,18 @@ public class HeroController : MonoBehaviour
     {
         if (_parrySystem.IsParrying.Value || _isAttacking || _moveLockTimer > 0f || 
             _shieldSystem.IsShielded.Value || !TryConsumeStamina(_config.RollStamina)) return;
-
-        _animService.SetTrigger(_animator, AnimTriggers.Dash);
         _moveLockTimer = _config.MoveDelay;
         bool isWall = _environmentDetecter.IsTouchingWall.Value;
 
         if (_environmentDetecter.IsGrounded.Value && !isWall)
         {
+            _animService.SetTrigger(_animator, AnimTriggers.Dash);
             _rigidbody.linearVelocity = new Vector2(transform.localScale.x * _config.RollDistance, _rigidbody.linearVelocity.y);
             _canDash = false;
         }
         else if (!_environmentDetecter.IsGrounded.Value && !isWall && _canDash)
         {
+            _animService.SetTrigger(_animator, AnimTriggers.Dash);
             _rigidbody.linearVelocity = new Vector2(transform.localScale.x * _config.DashDistance, 1.5f);
             _canDash = false;
         }
@@ -202,8 +204,6 @@ public class HeroController : MonoBehaviour
 
     public void OnAttack()
     {
-        if (_parrySystem.IsParrying.Value || _moveLockTimer > 0f || _isAttacking) return;
-
         if (_environmentDetecter.IsGrounded.Value)
         {
             if (_canSuperAttack)
@@ -212,28 +212,29 @@ public class HeroController : MonoBehaviour
                 _isAttacking = true;
                 _moveLockTimer = _config.MoveDelay * 2f;
                 _canSuperAttack = false;
-                Invoke(nameof(ResetAttackState), 0.3f);
             }
             else
             {
-                _attackNum = (_attackNum % _config.MaxComboAttacks) + 1;
+                if(iscomboContinue && _attackNum < _config.MaxComboAttacks) _attackNum++ ;
+                else _attackNum = 0;
+                _animService.SetValue(_animator, AnimValues.AttackNum,0, _attackNum);
+
                 _attackComboTimer = _config.AttackComboDelay;
                 _animService.SetTrigger(_animator, AnimTriggers.Attack);
                 _isAttacking = true;
                 _moveLockTimer = _config.MoveDelay * 2f;
-                Invoke(nameof(ResetAttackState), 0.2f);
             }
         }
         else
         {
             _animService.SetTrigger(_animator, AnimTriggers.AirAttack);
             _isAttacking = true;
-            Invoke(nameof(ResetAttackState), 0.3f);
         }
     }
 
     public void OnParry()
     {
+        Debug.Log("Parry");
         if (_environmentDetecter.IsTouchingWall.Value || _moveLockTimer > 0f || !TryConsumeStamina(_config.ParryStamina)) return;
 
         _animService.SetTrigger(_animator, AnimTriggers.Parry);
@@ -250,7 +251,7 @@ public class HeroController : MonoBehaviour
         _animService.SetState(_animator, AnimStates.CanSuperAttack, true);
     }
 
-    // ====== Вспомогательные методы ======
+    // Helpers
     private bool TryConsumeStamina(float amount)
     {
         if (_stamina.CurrentStamina.Value < amount) return false;
@@ -258,7 +259,14 @@ public class HeroController : MonoBehaviour
         return true;
     }
 
-    private void ResetAttackState() => _isAttacking = false;
+    public void SetAttackComboFlag() => iscomboContinue = true;
+    public void ResetAttackComboFlag()
+    {
+        _attackNum = 0;
+        _animService.SetValue(_animator, AnimValues.AttackNum,0, _attackNum);
+        iscomboContinue = false;
+        _isAttacking = false;
+    }
 
     private void OnDestroy() => _disposables.Dispose();
 }

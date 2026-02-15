@@ -3,17 +3,30 @@ using System;
 using UniRx;
 using Zenject;
 using GameEnums;
+using UnityEngine.Assertions.Must;
 
-[RequireComponent (typeof(Animator))]
-public class HeroHealth : BaseHealth<PlayerHealthConfigSO>
+[RequireComponent (typeof(ShieldSystem))]
+[RequireComponent (typeof(ParrySystem))]
+public class HeroHealth : BaseHealth
 {
-    [Inject] private ShieldSystem _shieldSystem;   
-    [Inject] private ParrySystem _parrySystem; 
+    public float maxH;
+    private ShieldSystem _shieldSystem;   
+    private ParrySystem _parrySystem; 
     private ReactiveProperty<bool> _isStaggered = new ReactiveProperty<bool>(false);
     private bool isInvincible;
     
     public IReadOnlyReactiveProperty<bool> IsStaggered => _isStaggered;
-    
+
+    protected override void Awake()
+    {
+        _shieldSystem = GetComponent<ShieldSystem>();
+        _parrySystem = GetComponent<ParrySystem>();
+        _maxHealth.Value = _gameData.HealthLevel.Value * 25f;
+        _currentHealth.Value = _maxHealth.Value;
+        _currentTempHealth.Value = _maxHealth.Value;
+        maxH = _maxHealth.Value;
+    }
+
     public override (bool, bool) TakeDamage(DamageData damageData)
     {
         if(isInvincible) return (false, false);

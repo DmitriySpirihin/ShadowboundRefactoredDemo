@@ -6,12 +6,12 @@ public class LocalAudioManager : MonoBehaviour
 {
     [SerializeField] private AudioData[] _audioBank = new AudioData[0];
     private Dictionary<string, AudioData> _hashedBank = new Dictionary<string, AudioData>();
-
-    [Inject] private AudioManager _audioManager;
-    [Inject] private AudioSource _audioSource;
+    [Inject] private GameData _gameData;
+    private AudioSource _audioSource;
 
     void Awake()
     {
+        _audioSource = GetComponent<AudioSource>();
        if (_audioBank.Length == 0) return;
        
        for (int i = 0; i < _audioBank.Length; i++) _hashedBank.Add(_audioBank[i].Name, _audioBank[i]);
@@ -22,7 +22,7 @@ public class LocalAudioManager : MonoBehaviour
         if (_hashedBank.Count == 0) return;
         if (_hashedBank.TryGetValue(name, out AudioData data))
         {
-            _audioManager.PlayCustomSound(_audioSource, data.Clip, data.Volume);
+            _audioSource.PlayOneShot(data.Clip, data.Volume * _gameData.SoundVolume.Value);
         }
     }
 }
