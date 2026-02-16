@@ -36016,7 +36016,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c779f700e0b26ff48b46f63ff0f2abe3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
-  _config: {fileID: 11400000, guid: 90bb5ff7d0022084fa17744d569ef173, type: 2}
+  _config: {fileID: 0}
 --- !u!114 &2037864215885504171
 MonoBehaviour:
   m_ObjectHideFlags: 0
