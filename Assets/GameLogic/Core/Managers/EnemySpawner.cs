@@ -5,7 +5,6 @@ using UnityEngine;
 using Zenject;
 using GameEnums;
 
-[RequireComponent(typeof(EnemyWaveConfigSO))]
 public class EnemySpawner : MonoBehaviour
 {
     [Header("Configuration")]
@@ -20,7 +19,7 @@ public class EnemySpawner : MonoBehaviour
     // Runtime state
     private Dictionary<EnemyType, Queue<GameObject>> _pools = new();
     private Dictionary<EnemyType, int> _activeCounts = new();
-    private Dictionary<EnemyType, WaveConfigSO.WaveEntry> _waveSettings = new();
+    private Dictionary<EnemyType, EnemyWaveConfigSO.WaveEntry> _waveSettings = new();
     
     private int _currentWaveIndex = 0;
     private bool _isSpawningAllowed = true;
@@ -40,7 +39,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void InitializePools()
     {
-        // Создаём пул для каждого типа из конфига
+        // Pool for every enemy type 
         foreach (var entry in _waveConfig.Waves)
         {
             var pool = new Queue<GameObject>(_poolSizePerType);
@@ -48,14 +47,14 @@ public class EnemySpawner : MonoBehaviour
             _activeCounts[entry.EnemyType] = 0;
             _waveSettings[entry.EnemyType] = entry;
 
-            // Предварительное создание объектов БЕЗ инстанцирования в рантайме
+            // Preload objects without run time instantiations
             for (int i = 0; i < _poolSizePerType; i++)
             {
                 GameObject instance = Instantiate(entry.Prefab, transform);
                 instance.name = $"{entry.EnemyType}_Pooled_{i}";
                 instance.SetActive(false);
                 
-                // Регистрация в контейнере для DI (Zenject)
+                // Dependancy injection
                 _container.Inject(instance);
                 
                 pool.Enqueue(instance);
@@ -67,19 +66,13 @@ public class EnemySpawner : MonoBehaviour
     {
         if (!_needAutoSpawn) return;
 
-        // Автоспавн стартует после задержки
-        Observable.Timer(System.TimeSpan.FromSeconds(_waveConfig.InitialSpawnDelay))
-            .Subscribe(_ => StartAutoSpawnLoop())
-            .AddTo(_disposables);
+        // Auto spawn after delay
+        Observable.Timer(System.TimeSpan.FromSeconds(_waveConfig.InitialSpawnDelay)).Subscribe(_ => StartAutoSpawnLoop()).AddTo(_disposables);
     }
 
     private void StartAutoSpawnLoop()
     {
-        Observable.EveryUpdate()
-            .Where(_ => _isSpawningAllowed && CanSpawnNextEnemy())
-            .First() // Спавним ОДИН враг за раз
-            .Subscribe(_ => SpawnNextFromWave())
-            .AddTo(_disposables);
+        Observable.EveryUpdate().Where(_ => _isSpawningAllowed && CanSpawnNextEnemy()).First().Subscribe(_ => SpawnNextFromWave()).AddTo(_disposables);
     }
 
     private bool CanSpawnNextEnemy()
@@ -89,7 +82,6 @@ public class EnemySpawner : MonoBehaviour
         var currentWave = _waveConfig.Waves[_currentWaveIndex];
         int active = _activeCounts.GetValueOrDefault(currentWave.EnemyType, 0);
         
-        // Спавним ТОЛЬКО если есть свободные слоты в пуле
         return active < currentWave.MaxAliveAtOnce && _pools[currentWave.EnemyType].Count > 0;
     }
 
@@ -98,18 +90,14 @@ public class EnemySpawner : MonoBehaviour
         var currentWave = _waveConfig.Waves[_currentWaveIndex];
         SpawnEnemy(currentWave.EnemyType, _spawnPoint.position);
         
-        // После спавна ждём смерти + задержку перед следующим
+        // After spawn await enemy's dead with delay
         _isSpawningAllowed = false;
         Observable.Timer(System.TimeSpan.FromSeconds(currentWave.SpawnDelayAfterDeath))
             .Subscribe(_ => _isSpawningAllowed = true)
             .AddTo(_disposables);
     }
 
-    // === Публичный API ===
-
-    /// <summary>
-    /// Ручной спавн врага в указанной позиции
-    /// </summary>
+    // Manual pooling
     public GameObject SpawnEnemy(EnemyType type, Vector3 position)
     {
         if (!_pools.TryGetValue(type, out var pool) || pool.Count == 0)
@@ -117,74 +105,41 @@ public class EnemySpawner : MonoBehaviour
             Debug.LogWarning($"No available {type} in pool! Pool size: {_poolSizePerType}, Active: {_activeCounts.GetValueOrDefault(type, 0)}");
             return null;
         }
-
         GameObject instance = pool.Dequeue();
         instance.transform.position = position;
         instance.SetActive(true);
         
-        // Подписка на смерть для возврата в пул
+        // Subscription to return in pool when is dead
         var health = instance.GetComponent<EnemyHealth>();
         if (health != null)
         {
-            health.State
-                .Where(state => state == HealthState.Dead)
-                .First() // Только один раз
-                .Subscribe(_ => ReturnToPool(instance, type))
-                .AddTo(instance); // Отписка при уничтожении объекта
+            health.State.Where(state => state == HealthState.Dead).First().Subscribe(_ => ReturnToPool(instance, type)).AddTo(instance);
         }
 
         _activeCounts[type] = _activeCounts.GetValueOrDefault(type, 0) + 1;
         return instance;
     }
 
-    /// <summary>
-    /// Спавн врага с рандомной позицией вокруг спавнпоинта
-    /// </summary>
     public GameObject SpawnEnemy(EnemyType type, float radius = 3f)
     {
-        Vector3 randomOffset = Random.insideUnitCircle * radius;
-        randomOffset.z = 0f; // 2D
-        return SpawnEnemy(type, _spawnPoint.position + randomOffset);
+        return SpawnEnemy(type, _spawnPoint.position);
     }
-
-    // === Возврат в пул ===
 
     private void ReturnToPool(GameObject enemy, EnemyType type)
     {
         enemy.SetActive(false);
-        enemy.transform.SetParent(transform); // Возврат в иерархию спавнера
+        enemy.transform.SetParent(transform);
         
         _pools[type].Enqueue(enemy);
         _activeCounts[type]--;
         
-        // Если автоспавн активен — продолжаем цикл
-        if (_needAutoSpawn && _isSpawningAllowed)
-            StartAutoSpawnLoop();
+        // if spawn is active resume
+        if (_needAutoSpawn && _isSpawningAllowed) StartAutoSpawnLoop();
     }
 
-    // === Управление волнами ===
-
-    /// <summary>
-    /// Принудительно завершить текущую волну и перейти к следующей
-    /// </summary>
-    public void AdvanceToNextWave()
-    {
-        _currentWaveIndex = (_currentWaveIndex + 1) % _waveConfig.Waves.Count;
-        _isSpawningAllowed = true;
-        StartAutoSpawnLoop();
-    }
-
-    /// <summary>
-    /// Остановить автоспавн (например, при паузе)
-    /// </summary>
     public void PauseAutoSpawn() => _isSpawningAllowed = false;
 
-    /// <summary>
-    /// Возобновить автоспавн
-    /// </summary>
     public void ResumeAutoSpawn() => _isSpawningAllowed = true;
-
-    // === Отладка ===
 
     [ContextMenu("Debug Pool Status")]
     private void DebugPoolStatus()

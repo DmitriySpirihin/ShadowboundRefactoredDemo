@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: EnemyHealthConfig
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealthConfigSO
-  baseMaxHealth: 120
+  baseMaxHealth: 50
   healthPerLevel: 25
   maxHealthCap: 175
   baseBleedSpeed: 18

@@ -1,3 +1,5 @@
+using UnityEngine;
+
 [CreateAssetMenu(fileName = "EnemyMovementConfig", menuName = "Configs/EnemyMovement")]
 public class EnemyMovementConfigSO : ScriptableObject
 {
@@ -14,8 +16,6 @@ public class EnemyMovementConfigSO : ScriptableObject
     // Physics
     public float MaxFallSpeed = 15f;
     public float MaxDashSpeed = 12f;
-    public float JumpHeight = 8f;
-    public float JumpStaminaCost = 15f;
     
     // Obstacle detection
     public float LedgeCheckOffset = 0.7f;
@@ -27,6 +27,7 @@ public class EnemyMovementConfigSO : ScriptableObject
     public float AttackStaminaCost = 20f;
     public float AttackDuration = 0.6f;
     public float AttackLockDuration = 0.4f;
+    public float MinStaminaForAttack = 40f;
     
     // State machine
     public float StateTransitionDelay = 0.2f;

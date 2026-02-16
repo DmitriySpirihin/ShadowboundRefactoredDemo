@@ -11,7 +11,7 @@ public class CameraMoovement : MonoBehaviour
 
     [SerializeField]private Transform targetTransform;
     
-    [Range(0.01f,5f)]public float lerpTime,size,baseSize,shakeIntencity,shakeDelay;
+    [Range(0.001f,5f)]public float lerpTime,size,baseSize,shakeIntencity,shakeDelay;
     [SerializeField]private Vector2 offset;
     private Camera cam;
     private Vector3 startPos;
@@ -66,10 +66,11 @@ public class CameraMoovement : MonoBehaviour
 
     private IEnumerator ShakeRoutine(int switchCount)
     {
+        startPos = transform.position;
         for (int i = 0; i < switchCount; i++)
         {
             float direction = (i % 2 == 0) ? 1f : -1f;
-            transform.position = startPos + new Vector3(direction * shakeIntencity, 0, 0);
+            transform.position = startPos + new Vector3( 0f, direction * shakeIntencity, 0f);
             yield return new WaitForSeconds(shakeDelay);
         }
         

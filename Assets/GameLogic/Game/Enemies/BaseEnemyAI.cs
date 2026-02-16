@@ -7,10 +7,11 @@ using GameEnums;
 [RequireComponent(typeof(Rigidbody2D), typeof(Animator))]
 public abstract class BaseEnemyAI : MonoBehaviour
 {
-    // === Dependencies ===
+    //Dependencies
     [Inject] protected IAnimationService _animService;
+    [Inject (Id = "HeroTr")] protected Transform _heroTransform;
     
-    // === Serialized References ===
+    // References 
     [Header("Core Components")]
     [SerializeField] protected EnemyMovementConfigSO _config;
     [SerializeField] protected Rigidbody2D _rigidbody;
@@ -18,45 +19,29 @@ public abstract class BaseEnemyAI : MonoBehaviour
     [SerializeField] protected EnvironmentDetector _environmentDetector;
     [SerializeField] protected HeroDetector _heroDetector;
     
-    [Header("Targeting")]
-    [SerializeField] protected Transform _heroTransform;
-    
     [Header("Health & Stamina")]
     [SerializeField] protected EnemyHealth _health;
     [SerializeField] protected StaminaCommon _stamina;
     
-    // Reactive State
+    // Reactive States
     private readonly ReactiveProperty<EnemyState> _currentState = new(EnemyState.Patrol);
     protected IReadOnlyReactiveProperty<EnemyState> CurrentState => _currentState;
     
     private readonly ReactiveProperty<bool> _canMove = new(true);
     protected IReadOnlyReactiveProperty<bool> CanMove => _canMove;
     
-    //Internal State
-    private float _moveLockTimer;
+    //Internal States
+    protected bool _isAttacking;
+    protected float _moveLockTimer;
     private float _stateTransitionCooldown;
     private Vector2 _patrolTarget;
-    private bool _isInitialized;
     
     private readonly CompositeDisposable _disposables = new();
 
-    // Lifecycle 
     protected virtual void Awake()
     {
-        CacheDependencies();
         InitializeStateMachine();
         InitializeReactiveBindings();
-    }
-
-    private void CacheDependencies()
-    {
-        _isInitialized = _rigidbody != null && 
-                         _animator != null && 
-                         _heroTransform != null &&
-                         _heroDetector != null;
-        
-        if (!_isInitialized)
-            Debug.LogError($"{name}: Missing required dependencies!", this);
     }
 
     private void InitializeStateMachine()
@@ -67,16 +52,11 @@ public abstract class BaseEnemyAI : MonoBehaviour
 
     private void InitializeReactiveBindings()
     {
-        // Смерть → финальное состояние
-        _health.State
-            .Where(state => state == HealthState.Dead)
-            .Subscribe(_ => TransitionToState(EnemyState.Dead))
-            .AddTo(_disposables);
+        // Death subscription
+        _health.State.Where(state => state == HealthState.Dead).Subscribe(_ => TransitionToState(EnemyState.Dead)).AddTo(_disposables);
         
-        // Обнаружение героя → переход в погоню/атаку
-        _heroDetector.IsHeroDetected
-            .DistinctUntilChanged()
-            .Subscribe(detected =>
+        // Hero detection -> chase / patrol transition
+        _heroDetector.IsHeroDetected.DistinctUntilChanged().Subscribe(detected =>
             {
                 if (detected && _currentState.Value != EnemyState.Dead)
                     TransitionToState(EnemyState.Chase);
@@ -85,23 +65,18 @@ public abstract class BaseEnemyAI : MonoBehaviour
             })
             .AddTo(_disposables);
         
-        // Доступность атаки → автоматический переход
-        Observable.CombineLatest(
-            _heroDetector.CanAttack,
-            _stamina.CurrentStamina.Value > 40f,
-            _currentState,
-            (canAttack, staminaOk, state) => canAttack && staminaOk && (state == EnemyState.Chase || state == EnemyState.Attack)
-        )
-        .DistinctUntilChanged()
-        .Where(can => can)
-        .Subscribe(_ => TransitionToState(EnemyState.Attack))
-        .AddTo(_disposables);
+        // If can attack
+        Observable.CombineLatest( _heroDetector.CanAttack, _stamina.CurrentStamina.Select(stamina => stamina > 40f), _currentState,
+         (canAttack, staminaOk, state) =>  canAttack && staminaOk && (state == EnemyState.Chase || state == EnemyState.Attack))
+          .DistinctUntilChanged()
+          .Where(can => can)
+          .Subscribe(_ => TransitionToState(EnemyState.Attack))
+          .AddTo(_disposables);
     }
 
-    // === Main Loop ===
     protected virtual void FixedUpdate()
     {
-        if (!_isInitialized || _currentState.Value == EnemyState.Dead) return;
+        if (_currentState.Value == EnemyState.Dead) return;
         
         UpdateTimers(Time.fixedDeltaTime);
         ExecuteCurrentState();
@@ -119,45 +94,34 @@ public abstract class BaseEnemyAI : MonoBehaviour
     {
         switch (_currentState.Value)
         {
-            case EnemyState.Idle:
-                OnStateIdle();
-                break;
-            case EnemyState.Patrol:
-                OnStatePatrol();
-                break;
-            case EnemyState.Chase:
-                OnStateChase();
-                break;
-            case EnemyState.Attack:
-                OnStateAttack();
-                break;
-            case EnemyState.Stunned:
-                OnStateStunned();
-                break;
+            case EnemyState.Idle: OnStateIdle(); break;
+            case EnemyState.Patrol: OnStatePatrol(); break;
+            case EnemyState.Chase: OnStateChase(); break;
+            case EnemyState.Attack: OnStateAttack(); break;
+            case EnemyState.Stunned: OnStateStunned(); break;
         }
     }
 
-    // === State Transitions ===
+    // State transitions
     protected void TransitionToState(EnemyState newState)
     {
         if (_stateTransitionCooldown > 0f || _currentState.Value == newState) return;
         
         ExitCurrentState();
-        _currentState.Value = newState;
+         _currentState.Value = newState;
         EnterNewState();
         _stateTransitionCooldown = _config.StateTransitionDelay;
-        
-        _animService.SetState(_animator, AnimStates.EnemyState, (int)newState);
+        // Update all states in animator
+        _animService.SetState(_animator, AnimStates.Idle, newState == EnemyState.Idle);
+        _animService.SetState(_animator, AnimStates.Patrol, newState == EnemyState.Patrol);
+        _animService.SetState(_animator, AnimStates.Chase, newState == EnemyState.Chase);
+        _animService.SetState(_animator, AnimStates.Attack, newState == EnemyState.Attack);
+        _animService.SetState(_animator, AnimStates.Stunned, newState == EnemyState.Stunned);
     }
 
-    private void ExitCurrentState()
+    protected virtual void ExitCurrentState()
     {
-        switch (_currentState.Value)
-        {
-            case EnemyState.Attack:
-                _animService.SetTrigger(_animator, AnimTriggers.AttackEnd);
-                break;
-        }
+        
     }
 
     private void EnterNewState()
@@ -166,20 +130,19 @@ public abstract class BaseEnemyAI : MonoBehaviour
         {
             case EnemyState.Patrol:
                 SetPatrolTarget();
-                break;
+            break;
             case EnemyState.Attack:
                 _moveLockTimer = _config.AttackLockDuration;
-                break;
+            break;
         }
     }
 
-    // === State Implementations (виртуальные для кастомизации) ===
+    //State implementations
     protected virtual void OnStateIdle() => StopMovement();
     
     protected virtual void OnStatePatrol()
     {
-        if (Vector2.Distance(transform.position, _patrolTarget) < _config.PatrolArrivalThreshold)
-            SetPatrolTarget();
+        if (Vector2.Distance(transform.position, _patrolTarget) < _config.PatrolArrivalThreshold)  SetPatrolTarget();
         
         MoveTowardsTarget(_patrolTarget, _config.PatrolSpeed);
         HandlePatrolObstacles();
@@ -193,46 +156,40 @@ public abstract class BaseEnemyAI : MonoBehaviour
     
     protected virtual void OnStateAttack()
     {
-        // Анимация и эффекты управляются через события аниматора
-        // Физика заморожена во время атаки
         StopMovement();
     }
     
     protected virtual void OnStateStunned()
     {
         StopMovement();
-        _rigidbody.velocity = Vector2.zero;
+        _rigidbody.linearVelocity = Vector2.zero;
     }
 
-    // === Core Movement Utilities ===
+    //Core Movement 
     protected void MoveTowardsTarget(Vector2 target, float speed)
     {
         if (!_canMove.Value || _moveLockTimer > 0f) return;
         
         float direction = Mathf.Sign(target.x - transform.position.x);
-        if (Mathf.Abs(direction) > 0.1f)
-            transform.localScale = new Vector3(direction, 1f, 1f);
+        if (Mathf.Abs(direction) > 0.1f) transform.localScale = new Vector3(direction, 1f, 1f);
         
         _rigidbody.linearVelocity = new Vector2(direction * speed, _rigidbody.linearVelocity.y);
     }
 
-    protected void StopMovement() => 
-        _rigidbody.linearVelocity = new Vector2(0f, _rigidbody.linearVelocity.y);
+    protected void StopMovement() =>  _rigidbody.linearVelocity = new Vector2(0f, _rigidbody.linearVelocity.y);
 
     protected void ApplyImpulse(Vector2 force)
     {
         _rigidbody.AddForce(force, ForceMode2D.Impulse);
         TransitionToState(EnemyState.Stunned);
-        Observable.Timer(TimeSpan.FromSeconds(_config.StunDuration))
-            .Subscribe(_ => TransitionToState(EnemyState.Patrol))
-            .AddTo(_disposables);
+        Observable.Timer(TimeSpan.FromSeconds(_config.StunDuration)).Subscribe(_ => TransitionToState(EnemyState.Patrol)).AddTo(_disposables);
     }
 
     // === Patrol Logic ===
     private void SetPatrolTarget()
     {
-        float patrolRadius = _config.PatrolRadius * Random.Range(0.7f, 1.3f);
-        float angle = Random.Range(0f, 360f) * Mathf.Deg2Rad;
+        float patrolRadius = _config.PatrolRadius * UnityEngine. Random.Range(0.7f, 1.3f);
+        float angle = UnityEngine.Random.Range(0f, 360f) * Mathf.Deg2Rad;
         _patrolTarget = (Vector2)transform.position + new Vector2(
             Mathf.Cos(angle) * patrolRadius,
             Mathf.Sin(angle) * patrolRadius
@@ -241,54 +198,36 @@ public abstract class BaseEnemyAI : MonoBehaviour
 
     protected virtual void HandlePatrolObstacles()
     {
-        bool isLedge = !Physics2D.Raycast(
-            (Vector2)transform.position + new Vector2(transform.localScale.x * _config.LedgeCheckOffset, 0f),
-            Vector2.down,
-            _config.LedgeCheckDistance,
-            _config.GroundLayer
-        );
-        
-        bool isWall = Physics2D.Raycast(
-            (Vector2)transform.position,
-            Vector2.right * transform.localScale.x,
-            _config.WallCheckDistance,
-            _config.GroundLayer
-        );
+        bool isLedge = !Physics2D.Raycast((Vector2)transform.position + new Vector2(transform.localScale.x * _config.LedgeCheckOffset, 0f), Vector2.down, _config.LedgeCheckDistance, _config.GroundLayer );
+        bool isWall = Physics2D.Raycast((Vector2)transform.position,  Vector2.right * transform.localScale.x, _config.WallCheckDistance, _config.GroundLayer);
 
-        if (isLedge || isWall)
-            transform.localScale = new Vector3(-transform.localScale.x, 1f, 1f);
+        if (isLedge || isWall) transform.localScale = new Vector3(-transform.localScale.x, 1f, 1f);
     }
 
     protected virtual void HandleChaseObstacles()
     {
-        // Базовая реализация — наследники могут расширять
         HandlePatrolObstacles();
     }
 
-    // === Physics & Animation ===
+    // Physics & Animation
     private void ApplyPhysicsConstraints()
     {
         // Clamp fall speed
-        if (_rigidbody.linearVelocity.y < -_config.MaxFallSpeed)
-            _rigidbody.linearVelocity = new Vector2(_rigidbody.linearVelocity.x, -_config.MaxFallSpeed);
+        if (_rigidbody.linearVelocity.y < -_config.MaxFallSpeed) _rigidbody.linearVelocity = new Vector2(_rigidbody.linearVelocity.x, -_config.MaxFallSpeed);
         
         // Clamp horizontal speed during dash-like states
-        if (Mathf.Abs(_rigidbody.linearVelocity.x) > _config.MaxDashSpeed)
-            _rigidbody.linearVelocity = new Vector2(
-                Mathf.Sign(_rigidbody.linearVelocity.x) * _config.MaxDashSpeed,
-                _rigidbody.linearVelocity.y
-            );
+        if (Mathf.Abs(_rigidbody.linearVelocity.x) > _config.MaxDashSpeed) _rigidbody.linearVelocity = new Vector2(Mathf.Sign(_rigidbody.linearVelocity.x) * _config.MaxDashSpeed, _rigidbody.linearVelocity.y);
     }
 
     private void UpdateAnimator()
     {
-        _animService.SetValue(_animator, AnimValues.VelocityX, Mathf.Abs(_rigidbody.linearVelocity.x));
-        _animService.SetValue(_animator, AnimValues.VelocityY, _rigidbody.linearVelocity.y);
+        _animService.SetValue(_animator, AnimValues.VelocityX, Mathf.Abs(_rigidbody.linearVelocity.x), 0);
+        _animService.SetValue(_animator, AnimValues.VelocityY, _rigidbody.linearVelocity.y, 0);
         _animService.SetState(_animator, AnimStates.Grounded, _environmentDetector.IsGrounded.Value);
         _animService.SetState(_animator, AnimStates.CanMove, _canMove.Value && _moveLockTimer <= 0f);
     }
 
-    // === Public API для триггеров из аниматора/других систем ===
+    //Public API for animator events
     public void OnAttackStarted() => _isAttacking = true;
     public void OnAttackEnded() => _isAttacking = false;
     public void OnTakeDamage() => TransitionToState(EnemyState.Stunned);

@@ -9,7 +9,8 @@ namespace GameEnums
 
     public enum ButtonType {DoJump, DoShield, DoParry, DoAttack, DoRoll, DoMagic}
 
-    public enum AnimStates { Idle,isDead,CanSuperAttack,MoovingBack,Cling,Slide,Grounded,Shielded,Charging,InWeb,IsBackStrike,Destruct,Staggered,CanMove, HasConcentration}
+    public enum AnimStates { Idle,isDead,CanSuperAttack,MoovingBack,Cling,Slide,Grounded,Shielded,Charging,InWeb,IsBackStrike,Destruct,Staggered,CanMove, HasConcentration, 
+                              Patrol, Chase, Attack, Stunned}
     public enum AnimTriggers { Jump,AirAttack,WallJump,Climb,DoubleJump,Dash,Attack,MagicAttack,Hit,Execute,Throw,Parry,Roll}
     public enum AnimValues  { VelocityX, VelocityY, AttackNum}
 

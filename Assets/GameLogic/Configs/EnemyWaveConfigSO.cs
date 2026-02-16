@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using GameEnums;
 
 [CreateAssetMenu(fileName = "EnemyWaveConfig", menuName = "Configs/EnemyWave")]
 public class EnemyWaveConfigSO : ScriptableObject

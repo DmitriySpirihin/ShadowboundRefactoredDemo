@@ -128,9 +128,7 @@ public abstract class BaseHealth : MonoBehaviour, IHealth, IDestructable
         // dissable collisiison
         gameObject.layer = LayerMask.NameToLayer("Dead");
         
-        Observable.Timer(TimeSpan.FromSeconds(5f))
-            .Subscribe(_ => Destroy(gameObject))
-            .AddTo(_disposables);
+        Observable.Timer(TimeSpan.FromSeconds(5f)).Subscribe(_ => Destroy(gameObject)).AddTo(_disposables);
     }
     
     protected abstract void OnDeath(DamageData damData);
@@ -139,14 +137,9 @@ public abstract class BaseHealth : MonoBehaviour, IHealth, IDestructable
     {
         if (_currentTempHealth.Value <= _currentHealth.Value) return;
         
-        float speed = (_currentTempHealth.Value - _currentHealth.Value) < _config.slowBleedThreshold 
-            ? _config.slowBleedSpeed 
-            : _bleedSpeed;
+        float speed = (_currentTempHealth.Value - _currentHealth.Value) < _config.slowBleedThreshold  ? _config.slowBleedSpeed  : _bleedSpeed;
             
-        _currentTempHealth.Value = Mathf.Max(
-            _currentTempHealth.Value - (speed * Time.deltaTime),
-            _currentHealth.Value
-        );
+        _currentTempHealth.Value = Mathf.Max( _currentTempHealth.Value - (speed * Time.deltaTime), _currentHealth.Value);
     }
     
     protected virtual void OnHealthChanged(float newHealth)
