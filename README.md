@@ -3,7 +3,7 @@
 [![Play on Itch.io](https://img.shields.io/badge/Play%20on-Itch.io-ff6138?logo=itchdotio&logoColor=white)](https://dmitriy-spirikhin.itch.io)
 [![Watch Demo Video](https://img.shields.io/badge/Watch-Demo%20Video-ff0000?logo=youtube&logoColor=white)](https://youtu.be/WtyvSXiEDmo?si=L1nPp2lGFBCpFte6)
 
-![Unity](https://img.shields.io/badge/Unity-6000.2.6f2%2B-000000?logo=unity&logoColor=white)
+![Unity](https://img.shields.io/badge/Unity-6000.2%2B-000000?logo=unity&logoColor=white)
 ![C#](https://img.shields.io/badge/C%23-2021%2B-239120?logo=csharp&logoColor=white)
 ![DI](https://img.shields.io/badge/DI-Zenject-007acc?logo=visualstudiocode&logoColor=white)
 ![SOLID](https://img.shields.io/badge/SOLID-Principles-brightgreen)
