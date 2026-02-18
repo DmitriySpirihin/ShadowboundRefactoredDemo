@@ -1,6 +1,6 @@
 # Shadowbound: Refactored Demo
 
-[![Play on Itch.io](https://img.shields.io/badge/Play%20on-Itch.io-ff6138?logo=itchdotio&logoColor=white)](https://dmitriy-spirikhin.itch.io)
+[![Play on Itch.io](https://img.shields.io/badge/Play%20on-Itch.io-ff6138?logo=itchdotio&logoColor=white)](https://dmitriy-spirikhin.itch.io/shadowbound)
 [![Watch Demo Video](https://img.shields.io/badge/Watch-Demo%20Video-ff0000?logo=youtube&logoColor=white)](https://youtu.be/WtyvSXiEDmo?si=L1nPp2lGFBCpFte6)
 
 ![Unity](https://img.shields.io/badge/Unity-6000.2%2B-000000?logo=unity&logoColor=white)
