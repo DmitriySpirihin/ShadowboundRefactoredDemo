@@ -1,9 +1,16 @@
 # Shadowbound: Refactored Demo
 
+# Shadowbound: Refactored Demo
+
 [![Play on Itch.io](https://img.shields.io)](https://dmitriy-spirikhin.itch.io)
 [![Watch Demo Video](https://img.shields.io)](https://youtu.be)
 
-![Unity](https://img.shields.io) ![C#](https://img.shields.io) ![DI](https://img.shields.io) ![SOLID](https://img.shields.io) ![Tests](https://img.shields.io)
+![Unity](https://img.shields.io)
+![C#](https://img.shields.io)
+![DI](https://img.shields.io)
+![SOLID](https://img.shields.io)
+![Tests](https://img.shields.io)
+
 
 
 **Shadowbound** — это мобильная Action-RPG с Souls-like механикой. Проект представляет собой результат глубокого рефакторинга оригинальной игры, целью которого был переход от монолитной архитектуры к **индустриальным стандартам**, масштабируемости и чистому коду.
